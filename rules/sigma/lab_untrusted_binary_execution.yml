@@ -1,0 +1,30 @@
+title: Security Lab - Process Execution From Untrusted Binary Path
+id: 6f1c2a7e-3b1d-4c6a-9e0f-1a2b3c4d5e01
+status: experimental
+description: >
+  An agent started a process whose resolved binary lies outside trusted system
+  paths. Mirrors detection_engine.py UntrustedBinaryRule.
+references:
+  - detection_engine.py (UntrustedBinaryRule)
+author: Security lab
+date: 2026/10/31
+tags:
+  - attack.execution
+logsource:
+  product: security_lab
+  service: master_log
+detection:
+  selection:
+    type: telemetry
+    action: process_exec
+    phase: pre
+  trusted:
+    details.binary_path|startswith:
+      - '/usr/bin/'
+      - '/bin/'
+      - '/usr/sbin/'
+      - '/sbin/'
+  condition: selection and not trusted
+falsepositives:
+  - Operator-installed utilities run intentionally from a custom PATH location
+level: high

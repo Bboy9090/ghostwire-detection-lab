@@ -1,0 +1,24 @@
+title: Security Lab - Host Isolation Requested But Not Confirmed
+id: 6f1c2a7e-3b1d-4c6a-9e0f-1a2b3c4d5e09
+status: experimental
+description: >
+  The server asked an agent to isolate its host, and the agent did not answer in time.
+  The host may still be connected, or the agent may have stopped. Either way, the operator
+  needs to know that containment is unconfirmed. Logged by server.py as isolation_unconfirmed.
+references:
+  - server.py (_request_isolation, isolation_unconfirmed)
+author: Security lab
+date: 2026/10/31
+tags:
+  - attack.impact
+logsource:
+  product: security_lab
+  service: master_log
+detection:
+  selection:
+    type: server_event
+    event: isolation_unconfirmed
+  condition: selection
+falsepositives:
+  - An agent that was offline during the revocation
+level: high

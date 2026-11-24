@@ -1,0 +1,27 @@
+title: Security Lab - Burst Of Authentication Failures From One Peer
+id: 6f1c2a7e-3b1d-4c6a-9e0f-1a2b3c4d5e06
+status: experimental
+description: >
+  A peer failed the shared-secret handshake more than three times within five
+  minutes. Repeated failures suggest a process without lab.secret probing the
+  listener, or a component with a stale or wrong secret. Each refusal is logged
+  by server.py as a server_event with event auth_failed.
+references:
+  - server.py (_register, auth_failed)
+  - tools/log_injection_sim.py (A01, A02, A03)
+author: Security lab
+date: 2026/10/31
+tags:
+  - attack.credential_access
+logsource:
+  product: security_lab
+  service: master_log
+detection:
+  selection:
+    type: server_event
+    event: auth_failed
+  condition: selection | count() by peer > 3
+  timeframe: 5m
+falsepositives:
+  - A component started with a stale lab.secret after rotation
+level: high

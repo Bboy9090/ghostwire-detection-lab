@@ -1,0 +1,25 @@
+title: Security Lab - Agent Read Of Protected Test File
+id: 6f1c2a7e-3b1d-4c6a-9e0f-1a2b3c4d5e02
+status: experimental
+description: >
+  An agent began a file_read on the protected test file. Mirrors
+  detection_engine.py SensitiveFileAccessRule.
+references:
+  - detection_engine.py (SensitiveFileAccessRule)
+author: Security lab
+date: 2026/10/31
+tags:
+  - attack.collection
+logsource:
+  product: security_lab
+  service: master_log
+detection:
+  selection:
+    type: telemetry
+    action: file_read
+    phase: pre
+    details.path: '/tmp/sensitive_test.txt'
+  condition: selection
+falsepositives:
+  - Scheduled lab exercises that deliberately read the fixture
+level: medium

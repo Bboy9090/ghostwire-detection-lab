@@ -1,0 +1,24 @@
+title: Security Lab - Heartbeat Flood From Single Agent
+id: 6f1c2a7e-3b1d-4c6a-9e0f-1a2b3c4d5e03
+status: experimental
+description: >
+  More than six heartbeats from one agent within ten seconds. Mirrors the flood
+  finding of detection_engine.py HeartbeatAnomalyRule. The threshold assumes a
+  5 second expected interval; adjust it for other baselines.
+references:
+  - detection_engine.py (HeartbeatAnomalyRule, kind=flood)
+author: Security lab
+date: 2026/10/31
+tags:
+  - attack.impact
+logsource:
+  product: security_lab
+  service: master_log
+detection:
+  selection:
+    type: heartbeat
+  condition: selection | count() by agent_id > 6
+  timeframe: 10s
+falsepositives:
+  - Agents deliberately configured with short heartbeat intervals
+level: high

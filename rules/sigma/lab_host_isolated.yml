@@ -1,0 +1,27 @@
+title: Security Lab - Host Isolation Applied
+id: 6f1c2a7e-3b1d-4c6a-9e0f-1a2b3c4d5e0a
+status: experimental
+description: >
+  An agent reported that its host is now isolated. Each occurrence should match an operator
+  request (task_issued with action isolate_host) or a revocation. Isolation without either is
+  an integrity alarm. Logged as the post telemetry of isolate_host with status ok.
+references:
+  - agent.py (_run_isolate_host)
+  - host_platform.py (IsolationController)
+author: Security lab
+date: 2026/10/31
+tags:
+  - attack.impact
+logsource:
+  product: security_lab
+  service: master_log
+detection:
+  selection:
+    type: telemetry
+    action: isolate_host
+    phase: post
+    details.status: 'ok'
+  condition: selection
+falsepositives:
+  - Operator-requested containment during an exercise
+level: medium

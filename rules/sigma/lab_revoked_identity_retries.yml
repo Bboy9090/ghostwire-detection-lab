@@ -1,0 +1,26 @@
+title: Security Lab - Repeated Connection Attempts By A Revoked Identity
+id: 6f1c2a7e-3b1d-4c6a-9e0f-1a2b3c4d5e07
+status: experimental
+description: >
+  A peer kept reconnecting with a key whose identity has been revoked. Persistent retries
+  suggest a compromised host that was not isolated, or a process that did not stop when
+  its identity was revoked. Each refusal is logged by server.py as identity_revoked.
+references:
+  - server.py (_register, identity_revoked)
+  - lab_common.py (set_revoked)
+author: Security lab
+date: 2026/10/31
+tags:
+  - attack.persistence
+logsource:
+  product: security_lab
+  service: master_log
+detection:
+  selection:
+    type: server_event
+    event: identity_revoked
+  condition: selection | count() by peer > 3
+  timeframe: 5m
+falsepositives:
+  - An agent that has not been told its identity was revoked and keeps its backoff loop running
+level: high

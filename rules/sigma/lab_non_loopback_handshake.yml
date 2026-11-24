@@ -1,0 +1,29 @@
+title: Security Lab - Loopback Handshake Reached Non-Loopback Peer
+id: 6f1c2a7e-3b1d-4c6a-9e0f-1a2b3c4d5e04
+status: experimental
+description: >
+  A net_loopback result reports a remote address outside loopback. The shipped
+  agent cannot produce this; it indicates a modified agent or an isolation breach.
+  Mirrors detection_engine.py NonLoopbackConnectionRule.
+references:
+  - detection_engine.py (NonLoopbackConnectionRule)
+author: Security lab
+date: 2026/10/31
+tags:
+  - attack.command_and_control
+logsource:
+  product: security_lab
+  service: master_log
+detection:
+  selection:
+    type: telemetry
+    action: net_loopback
+    phase: post
+  loopback:
+    details.remote_address|startswith:
+      - '127.'
+      - '::1'
+  condition: selection and not loopback
+falsepositives:
+  - None expected in a correctly isolated lab
+level: critical

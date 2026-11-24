@@ -1,0 +1,24 @@
+title: Security Lab - Live Session Dropped After Revocation
+id: 6f1c2a7e-3b1d-4c6a-9e0f-1a2b3c4d5e08
+status: experimental
+description: >
+  The server dropped an authenticated session because its identity was revoked while it
+  was connected. Each occurrence should match an operator revocation recorded as
+  revocation_changed. An occurrence without a matching revocation is an integrity alarm.
+references:
+  - server.py (_revocation_loop, session_revoked)
+author: Security lab
+date: 2026/10/31
+tags:
+  - attack.defense_evasion
+logsource:
+  product: security_lab
+  service: master_log
+detection:
+  selection:
+    type: server_event
+    event: session_revoked
+  condition: selection
+falsepositives:
+  - Expected after every deliberate revocation; review against the revocation_changed trail
+level: low

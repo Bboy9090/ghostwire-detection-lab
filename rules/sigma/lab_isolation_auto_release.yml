@@ -1,0 +1,26 @@
+title: Security Lab - Isolation Released By Time Limit
+id: 6f1c2a7e-3b1d-4c6a-9e0f-1a2b3c4d5e0b
+status: experimental
+description: >
+  An agent released its own host isolation when the time limit expired. This is the expected
+  safety path. Many repeats on one host suggest that renewals are not reaching the agent, or
+  that the time limit is set too short for the exercise.
+references:
+  - agent.py (_check_isolation_expiry)
+  - host_platform.py (IsolationController.expire_if_due)
+author: Security lab
+date: 2026/10/31
+tags:
+  - attack.defense_evasion
+logsource:
+  product: security_lab
+  service: master_log
+detection:
+  selection:
+    type: telemetry
+    action: release_host
+    task_id: 'auto-release'
+  condition: selection
+falsepositives:
+  - Normal expiry after an exercise ends
+level: low

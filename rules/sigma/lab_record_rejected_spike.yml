@@ -1,0 +1,27 @@
+title: Security Lab - Burst Of Rejected Telemetry From One Peer
+id: 6f1c2a7e-3b1d-4c6a-9e0f-1a2b3c4d5e05
+status: experimental
+description: >
+  The server rejected more than five records from one peer within a minute.
+  Schema violations at this rate suggest a misbehaving client, log injection
+  attempt, or a buggy agent. Each rejection is logged by server.py as a
+  server_event with event record_rejected.
+references:
+  - server.py (_dispatch, record_rejected)
+  - tools/log_injection_sim.py
+author: Security lab
+date: 2026/10/31
+tags:
+  - attack.defense_evasion
+logsource:
+  product: security_lab
+  service: master_log
+detection:
+  selection:
+    type: server_event
+    event: record_rejected
+  condition: selection | count() by peer > 5
+  timeframe: 1m
+falsepositives:
+  - Agent version mismatch after a schema change
+level: medium
